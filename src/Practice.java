@@ -1,6 +1,11 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
+import java.security.KeyStore.Entry;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class Practice {
     /**
@@ -12,7 +17,12 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        if (nums == null) return 0;
+        int sum = 0;
+        for (int num : nums) {
+            if (num % 2 != 0) sum += num;
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +37,20 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if (words == null) throw new NullPointerException("Words is null");
+        if (words.isEmpty()) throw new IllegalArgumentException("Words is empty");
+
+        // Create an iterator to grab the first word in the list
+        Iterator<String> iterator = words.iterator();
+        String shortest = iterator.next();
+        // For each word in words
+        while (iterator.hasNext()) {
+            String word = iterator.next();
+            if (word.length() < shortest.length()) shortest = word;
+            else if (word.length() == shortest.length() && word.compareTo(shortest) < 0) shortest = word;
+        }
+
+        return shortest;
     }
 
     /**
@@ -40,7 +63,14 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        if (ages == null) throw new NullPointerException("Ages is null");
+        // Create a set adults
+        Set<String> adults = new HashSet<>();
+        // For each entry in ages,
+        for (Map.Entry<String,Integer> person : ages.entrySet())
+            // If entry's age is >= 18, add entry's name to set. 
+            if (person.getValue() >= 18) adults.add(person.getKey());
+        return adults;
     }
 
     /**
@@ -51,7 +81,15 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if (head == null) throw new IllegalArgumentException();
+        int greatest = head.data;
+
+        while (head.next != null) {
+            head = head.next;
+            if (head.data > greatest) greatest = head.data;
+        }
+
+        return greatest;
     }
 
     /**
@@ -68,7 +106,18 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        Map<T,Integer> frequencyMap = new HashMap<>();
+
+        // Move, then check
+        while (head != null) {
+            // If I'm correct, then this takes the given key and runs it through the provided function.
+            // In this case, the function returns 1 if the value is null, otherwise it will add 1 to the value.
+            // I believe this function is a "lambda", in other words, it has no name and immediately returns a value.
+            frequencyMap.compute(head.data, (k,v) -> (v == null) ? 1 : v + 1 );
+            head = head.next;
+        }
+
+        return frequencyMap;
     }
 
 
@@ -81,7 +130,34 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        // // Stack to decide the next Node to process
+        // Stack<BinaryTreeNode<?>> stack = new Stack<>();
+        // BinaryTreeNode<?> head = root;
+        // // Per leaf or double branch, subtract 1.
+        // int deepestLevel = 0;
+        // stack.add(head);
+        
+        // while (!stack.isEmpty()) {
+        //     // Add one per node
+        //     BinaryTreeNode<?> current = stack.pop();
+        //     deepestLevel++;
+            
+        //     // Add any child nodes to the stack.
+        //     if (current.left != null) stack.add(current.left);
+        //     if (current.right != null) stack.add(current.right);
+        //     // If this is a Full Node or Leaf Node, subtract 1
+        //     if (current.left == null && current.right == null) deepestLevel--;
+        //     if (current.left != null && current.right != null) deepestLevel--;
+        // }
+
+        // return deepestLevel;
+        // I don't know the stupid algorithm
+        return levelRecursive(root);
+    }
+
+    private static int levelRecursive(BinaryTreeNode<?> root) {
+        if (root == null) return 0;
+        return Math.max(levelRecursive(root.left),levelRecursive(root.right)) + 1;
     }
 
 
@@ -109,9 +185,14 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        return sumLevelRecursive(root, level, 1);
     }
 
+    private static int sumLevelRecursive(BinaryTreeNode<Integer> root, int level, int currentLevel) {
+        if (root == null) return 0;
+        if (currentLevel == level) return root.data;
+        else return (sumLevelRecursive(root.left, level, currentLevel+1) + sumLevelRecursive(root.right, level, currentLevel+1));
+    }
 
     /**
      * Returns true if the sum of the values in a given tree is equal to the sum
@@ -124,6 +205,20 @@ public class Practice {
      * @return true if the sums are equal, false otherwise
      */
     public static boolean sumMatch(BinaryTreeNode<Integer> root, ListNode<Integer> head) {
-        return false;
+        return (sumTree(root) == sumList(head));
+    }
+
+    public static int sumTree(BinaryTreeNode<Integer> root) {
+        if (root == null) return 0; 
+        return sumTree(root.left) + sumTree(root.right) + root.data;
+    }
+
+    public static int sumList(ListNode<Integer> head) {
+        int sum = 0;
+        while (head != null) {
+            sum+=head.data;
+            head = head.next;
+        }
+        return sum;
     }
 }
