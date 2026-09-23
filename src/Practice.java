@@ -185,9 +185,14 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        return sumLevelRecursive(root, level, 1);
     }
 
+    private static int sumLevelRecursive(BinaryTreeNode<Integer> root, int level, int currentLevel) {
+        if (root == null) return 0;
+        if (currentLevel == level) return root.data;
+        else return (sumLevelRecursive(root.left, level, currentLevel+1) + sumLevelRecursive(root.right, level, currentLevel+1));
+    }
 
     /**
      * Returns true if the sum of the values in a given tree is equal to the sum
