@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.security.KeyStore.Entry;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -129,7 +130,33 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        // // Stack to decide the next Node to process
+        // Stack<BinaryTreeNode<?>> stack = new Stack<>();
+        // BinaryTreeNode<?> head = root;
+        // // Per leaf or double branch, subtract 1.
+        // int deepestLevel = 0;
+        // stack.add(head);
+        
+        // while (!stack.isEmpty()) {
+        //     // Add one per node
+        //     BinaryTreeNode<?> current = stack.pop();
+        //     deepestLevel++;
+            
+        //     // Add any child nodes to the stack.
+        //     if (current.left != null) stack.add(current.left);
+        //     if (current.right != null) stack.add(current.right);
+        //     // If this is a Full Node or Leaf Node, subtract 1
+        //     if (current.left == null && current.right == null) deepestLevel--;
+        //     if (current.left != null && current.right != null) deepestLevel--;
+        // }
+
+        // return deepestLevel;
+        return levelRecursive(root);
+    }
+
+    private static int levelRecursive(BinaryTreeNode<?> root) {
+        if (root == null) return 0;
+        return Math.max(levelRecursive(root.left),levelRecursive(root.right)) + 1;
     }
 
 
