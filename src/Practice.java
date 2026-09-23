@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.security.KeyStore.Entry;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class Practice {
@@ -59,7 +61,14 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        if (ages == null) throw new NullPointerException("Ages is null");
+        // Create a set adults
+        Set<String> adults = new HashSet<>();
+        // For each entry in ages,
+        for (Map.Entry<String,Integer> person : ages.entrySet())
+            // If entry's age is >= 18, add entry's name to set. 
+            if (person.getValue() >= 18) adults.add(person.getKey());
+        return adults;
     }
 
     /**
