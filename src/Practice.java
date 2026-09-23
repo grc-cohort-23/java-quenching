@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +14,17 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+
+        if(nums == null || nums.length == 0) return 0;
+
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] % 2 != 0) {
+                sum += nums[i];
+            }
+        }
+
+        return sum;
     }
 
     /**
@@ -27,7 +39,22 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+
+        if(words == null) throw new NullPointerException();
+        if(words.isEmpty()) throw new IllegalArgumentException();
+
+        String shortestStr = null;
+        for(String word : words) {
+            if(shortestStr == null || shortestStr.length() > word.length()) {
+                shortestStr = word;
+            }
+
+            if(word.length() == shortestStr.length() && word.compareTo(shortestStr) < 0) {
+                shortestStr = word;
+            }
+        }
+
+        return shortestStr;
     }
 
     /**
@@ -40,7 +67,17 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+
+        if(ages == null) throw new NullPointerException();
+
+        Set<String> result = new HashSet<>();
+
+        for(Map.Entry<String, Integer> entry : ages.entrySet()){
+            if(entry.getValue() >= 18 ) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
     }
 
     /**
@@ -51,7 +88,17 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if(head == null) throw new IllegalArgumentException();
+        
+        int biggestNum = head.data;
+        while(head != null) {
+           if(head.data > biggestNum) {
+            biggestNum = head.data;
+    
+           }
+            head = head.next;
+        }
+        return biggestNum;
     }
 
     /**
@@ -68,7 +115,16 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        Map<T, Integer> result = new HashMap<>();
+        while(head != null) {
+            if(result.containsKey(head.data)) {
+                result.put(head.data, result.get(head.data) + 1);
+            } else {
+                result.put(head.data, 1);
+            }
+            head = head.next;
+        }
+        return result;
     }
 
 
@@ -81,7 +137,8 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        if(root == null) return 0;
+        return 1 + Math.max(levelCount(root.left), levelCount(root.right));
     }
 
 
@@ -109,7 +166,9 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        if(root == null ) return 0;
+        if(level == 1) return root.data;
+        return sumAtLevel(root.left, level -1) + sumAtLevel(root.right, level -1);
     }
 
 
@@ -123,7 +182,23 @@ public class Practice {
      * @param head The head of the linked list
      * @return true if the sums are equal, false otherwise
      */
+
+    public static int sumTree(BinaryTreeNode<Integer> root ) {
+        if(root == null) return 0;
+        return root.data + sumTree(root.left) + sumTree(root.right);
+    }
+    
+    public static int nodeSum(ListNode<Integer> head) {
+        if(head == null) return 0;
+        int sum = 0;
+        while(head != null) {
+            sum += head.data;
+            head = head.next;
+        }
+        return sum;
+    }
+
     public static boolean sumMatch(BinaryTreeNode<Integer> root, ListNode<Integer> head) {
-        return false;
+       return sumTree(root) == nodeSum(head);
     }
 }
