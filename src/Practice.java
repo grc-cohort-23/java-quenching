@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Iterator;
 
 public class Practice {
     /**
@@ -32,7 +33,20 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if (words == null) throw new NullPointerException("Words is null");
+        if (words.isEmpty()) throw new IllegalArgumentException("Words is empty");
+
+        // Create an iterator to grab the first word in the list
+        Iterator<String> iterator = words.iterator();
+        String shortest = iterator.next();
+        // For each word in words
+        while (iterator.hasNext()) {
+            String word = iterator.next();
+            if (word.length() < shortest.length()) shortest = word;
+            else if (word.length() == shortest.length() && word.compareTo(shortest) < 0) shortest = word;
+        }
+
+        return shortest;
     }
 
     /**
