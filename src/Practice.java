@@ -1,6 +1,4 @@
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Practice {
     /**
@@ -12,7 +10,12 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        if (nums == null) return 0;
+        int sum = 0;
+        for (int num : nums) {
+            if (num % 2 != 0) sum += num;
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +30,20 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if (words == null) throw new NullPointerException();
+        if (words.size() == 0) throw new IllegalArgumentException();
+        // placeholder of a word that likely won't exist lol
+        String shortest = null;
+        for (String word : words) {
+            if (shortest == null || shortest.length() > word.length()) { shortest = word; }
+            else if (shortest.length() == word.length()) {
+                // tiebreaker
+                if (shortest.compareTo(word) >= 0) shortest = word; 
+            }
+            // else do nothing
+        }
+
+        return shortest;
     }
 
     /**
@@ -40,7 +56,14 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        Set<String> legalAdults = new HashSet<>();
+        for (String adult : ages.keySet()) {
+            if (ages.get(adult) >= 18) {
+                legalAdults.add(adult);
+            }
+        }
+
+        return legalAdults;
     }
 
     /**
@@ -51,7 +74,17 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if (head == null) throw new IllegalArgumentException();
+        int big = head.data;
+        ListNode<Integer> curr = head.next;
+        while (curr != null) {
+            if (curr.data >= big) {
+                big = curr.data;
+            }
+            curr = curr.next;
+        }
+
+        return big;
     }
 
     /**
@@ -68,7 +101,19 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        Map<T, Integer> frequency = new HashMap<>();
+
+        ListNode<T> curr = head;
+        while (curr != null) {
+            if (frequency.containsKey(curr.data)) {
+                frequency.put(curr.data, frequency.get(curr.data) + 1); 
+            }
+            else {
+                frequency.put(curr.data, 1);
+            }
+            curr = curr.next;
+        }
+        return frequency;
     }
 
 
@@ -81,7 +126,11 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        if (root == null) return 0;
+        int left = levelCount(root.left);
+        int right = levelCount(root.right);
+        if (left > right) return left + 1;
+        else return right + 1;
     }
 
 
@@ -109,7 +158,27 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        if (root == null) return 0;
+        List<Integer> levelSums = new ArrayList<>();
+        Queue<BinaryTreeNode<Integer>> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int sum = 0;
+            
+            for (int i = 0; i < size; i++) {
+                BinaryTreeNode<Integer> curr = queue.remove();
+                sum += curr.data;
+                if (curr.left != null) queue.add(curr.left);
+                if (curr.right != null) queue.add(curr.right);
+            }
+
+            levelSums.add(sum);
+        }
+
+        if (level <= 0 || level > levelSums.size()) return 0;
+        return levelSums.get(level - 1);
     }
 
 
@@ -124,6 +193,39 @@ public class Practice {
      * @return true if the sums are equal, false otherwise
      */
     public static boolean sumMatch(BinaryTreeNode<Integer> root, ListNode<Integer> head) {
-        return false;
+        if (root == null && head == null) return true;
+        else {
+            if (root == null) return false;
+            if (head == null) return false;
+        }
+        int treeSum = 0;
+        int listSum = 0;
+
+        // TREE
+        Queue<BinaryTreeNode<Integer>> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int sum = 0;
+            
+            for (int i = 0; i < size; i++) {
+                BinaryTreeNode<Integer> curr = queue.remove();
+                sum += curr.data;
+                if (curr.left != null) queue.add(curr.left);
+                if (curr.right != null) queue.add(curr.right);
+            }
+
+            treeSum += sum;
+        }
+
+        // LIST
+        ListNode<Integer> curr = head;
+        while (curr != null) {
+            listSum += curr.data;
+            curr = curr.next;
+        }
+
+        return listSum == treeSum;
     }
 }
