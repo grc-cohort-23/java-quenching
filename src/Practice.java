@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.security.KeyStore.Entry;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -104,7 +105,18 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        Map<T,Integer> frequencyMap = new HashMap<>();
+
+        // Move, then check
+        while (head != null) {
+            // If I'm correct, then this takes the given key and runs it through the provided function.
+            // In this case, the function returns 1 if the value is null, otherwise it will add 1 to the value.
+            // I believe this function is a "lambda", in other words, it has no name and immediately returns a value.
+            frequencyMap.compute(head.data, (k,v) -> (v == null) ? 1 : v + 1 );
+            head = head.next;
+        }
+
+        return frequencyMap;
     }
 
 
