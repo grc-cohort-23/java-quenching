@@ -1,3 +1,5 @@
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +14,14 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        if (nums == null) return 0;
+        int sum = 0;
+        for (int i : nums) {
+            if (i % 2 != 0) {
+                sum = sum + i;
+            }
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +36,18 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        String shortestWord = null;
+        if (words == null) throw new NullPointerException("Set is null");
+        if (words.isEmpty()) throw new IllegalArgumentException("Empty Set");
+
+
+        for (String word : words) {
+        if (shortestWord == null || 
+            word.length() < shortestWord.length() || 
+            word.length() == shortestWord.length() && word.compareTo(shortestWord) < 0 )
+            shortestWord = word;
+        }
+        return shortestWord;
     }
 
     /**
@@ -40,7 +60,16 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        Set<String> adults = new HashSet<>();
+        if (ages == null) throw new NullPointerException("Map is null");
+        
+        for (String name : ages.keySet()) {
+            if (ages.get(name) >= 18) {
+                adults.add(name);
+            }
+        }
+        return adults;
+        
     }
 
     /**
@@ -51,7 +80,16 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if (head == null) { throw new IllegalArgumentException("head is null");}
+
+        ListNode<Integer> current = head;
+        int biggestNumber = Integer.MIN_VALUE;
+
+        while (current != null) {
+            if (current.data > biggestNumber) { biggestNumber = current.data; }
+            current = current.next;
+        }
+        return biggestNumber;
     }
 
     /**
