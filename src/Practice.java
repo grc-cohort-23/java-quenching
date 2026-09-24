@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Practice {
     /**
@@ -12,7 +16,18 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        int sum = 0;
+
+        if(nums == null){
+            return 0;
+        }
+
+        for(int num : nums){
+            if(num%2 != 0){
+                sum+=num;
+            }
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +42,33 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if(words.size() == 0) throw new IllegalArgumentException();
+        if(words == null) throw new NullPointerException();
+
+        List<String> wordsList = new ArrayList<>();
+        List<String> shortWordsList = new ArrayList<>();
+
+        for(String word : words){
+            wordsList.add(word);
+        }
+
+        String shortest = wordsList.get(0);
+        shortWordsList.add(shortest);
+
+        for(String word : wordsList){
+            if(word.length() < shortest.length()){
+                shortest=word;
+                shortWordsList.remove(0);
+                shortWordsList.add(shortest);
+            }
+            else if(word.length() == shortest.length()){
+                shortWordsList.add(word);
+                Collections.sort(shortWordsList);
+                shortest = shortWordsList.get(0);
+            }
+        }
+
+        return shortest;
     }
 
     /**
@@ -40,7 +81,14 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        if(ages == null) throw new NullPointerException();
+        Set<String> adult = new HashSet<>();
+
+        for(String person : ages.keySet()){
+            if(ages.get(person) >= 18) adult.add(person);
+        }
+
+        return adult;
     }
 
     /**
@@ -51,7 +99,18 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if(head == null) throw new IllegalArgumentException();
+        
+        ListNode<Integer> current = head;
+        int largestNum = current.data;
+        
+        while(current != null){
+            if(current.data > largestNum){
+                largestNum = current.data;
+            }
+            current = current.next;
+        }
+        return largestNum;
     }
 
     /**
@@ -68,7 +127,20 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        ListNode<T> current = head;
+        Map<T, Integer> frequency = new HashMap<>();
+
+        while(current!=null){
+            T value = current.data;
+            if(frequency.containsKey(value)){
+                frequency.put(value, frequency.get(value) +1);
+            }else{
+                frequency.put(value, 1);
+            }
+            current = current.next;
+        }
+        
+        return frequency;
     }
 
 
@@ -81,7 +153,20 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        int levels = 0;
+        if(root==null) return levels;
+
+        levels++;
+        int leftCount = levelCount(root.left);
+        int rightCount = levelCount(root.right);
+
+        if(leftCount > rightCount){
+            levels += leftCount;
+        }else{
+            levels += rightCount;
+        }
+
+        return levels;
     }
 
 
@@ -109,7 +194,10 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        if(root==null) return 0;
+        if(level == 1) return root.data;
+
+        return sumAtLevel(root.left, level-1) + sumAtLevel(root.right, level-1);
     }
 
 
@@ -124,6 +212,7 @@ public class Practice {
      * @return true if the sums are equal, false otherwise
      */
     public static boolean sumMatch(BinaryTreeNode<Integer> root, ListNode<Integer> head) {
+        
         return false;
     }
 }
