@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
 
 public class Practice {
     /**
@@ -12,9 +14,27 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
-    }
 
+        //returns the sum of the odd nums in array
+
+        if (nums == null) {
+            return 0;
+        }
+
+        if  (nums.length == 0) {
+            return 0;
+        }
+
+        int sum = 0;
+        
+        for(int num : nums) {
+            if (num % 2 != 0) {
+                sum += num;
+            }
+        }
+
+       return sum;
+    }
     /**
      * Returns the shortest word in the Set.
      * 
@@ -27,7 +47,21 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+
+        if (words.isEmpty()) {
+            throw new IllegalArgumentException("Set of words cannot be empty");
+        } 
+        if(words == null) {
+            throw new NullPointerException("Set of words cannot be null");
+        }
+
+        String shortest = null;
+        for (String word : words) {
+            if (shortest == null || shortest.length() > word.length() || (word.length() == shortest.length() && word.compareTo(shortest) < 0)) {
+                shortest = word;
+            }
+        }
+        return shortest;
     }
 
     /**
@@ -40,7 +74,18 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+
+        if (ages == null) {
+            throw new NullPointerException("Ages cannot be null");
+        }
+
+        Set<String> result = new HashSet<>();
+        for (Map.Entry<String, Integer> entry : ages.entrySet()) {
+            if (entry.getValue() >= 18) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
     }
 
     /**
@@ -51,7 +96,20 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+
+        if (head == null) {
+            throw new IllegalArgumentException("Head cannot be null");
+        }
+        ListNode<Integer> current = head;
+        int greatest = Integer.MIN_VALUE;
+        while (current != null) {
+            if(current.data > greatest) {
+                greatest = current.data;
+            }
+            current = current.next;
+        }
+
+        return greatest;
     }
 
     /**
@@ -68,7 +126,17 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        Map<T, Integer> result = new HashMap<>();
+        
+        ListNode<T> current = head;
+
+        while(current != null) {
+            int count = result.getOrDefault(current.data, 0);
+            result.put(current.data, count+1);
+            current = current.next;
+        }
+
+        return result;
     }
 
 
@@ -81,7 +149,11 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        if (root == null) {
+            return 0;
+        } 
+
+        return 1 + Math.max(levelCount(root.left), levelCount(root.right));
     }
 
 
@@ -109,7 +181,17 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        
+        if(root == null) {
+            return 0;
+        }
+
+        if (level == 1) {
+            return root.data;
+        } else {
+            return sumAtLevel(root.left, level - 1) + sumAtLevel(root.right, level - 1);
+        }
+    
     }
 
 
