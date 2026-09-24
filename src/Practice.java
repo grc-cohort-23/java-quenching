@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +13,14 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        if(nums==null){return 0;}
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]%2!=0){
+                sum=sum+nums[i];
+            }
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +35,22 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if(words.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+        if(words==null){
+            throw new NullPointerException();
+        }
+        String shortest= "";
+        for(String word:words){
+            if(shortest.equals("")){
+                shortest=word;
+            }
+            if(shortest.length() > word.length() || (shortest.length() == word.length() && shortest.compareTo(word) > 0)){
+                shortest=word;
+            }
+        }
+        return shortest;
     }
 
     /**
@@ -40,7 +63,14 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        if(ages==null){throw new NullPointerException();}
+        Set<String> adult= new HashSet<>();
+        ages.forEach((name, age)->{
+            if(age>=18){
+                adult.add(name);
+            }
+        });
+        return adult;
     }
 
     /**
@@ -51,7 +81,17 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if (head == null) {
+            throw new IllegalArgumentException();
+        }
+        int largest=head.data;
+        while(head.next!=null){
+            if(head.data>largest){
+                largest=head.data;
+            }
+            head=head.next;
+        }
+        return largest;
     }
 
     /**
