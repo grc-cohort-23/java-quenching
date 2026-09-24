@@ -1,6 +1,8 @@
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 public class Practice {
     /**
@@ -12,7 +14,16 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        if(nums == null) return 0;
+        
+        int sum = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] %2 != 0){
+                sum += nums[i];
+            }
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +38,24 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if(words == null){
+            throw new NullPointerException("No Set Exists");
+        }
+
+        if(words.size() == 0){
+            throw new IllegalArgumentException("No Words Exist");
+        }
+
+
+        String shortest = words.iterator().next();
+
+        for(String word : words){
+            if(word.length() < shortest.length() ||
+              (word.length() == shortest.length() && word.compareTo(shortest) < 0)){
+                shortest = word;
+            }
+        }
+        return shortest;
     }
 
     /**
@@ -40,7 +68,18 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        if(ages == null){
+            throw new NullPointerException("Map doesn't exist");
+        }
+
+        Set<String> adults = new HashSet<>();
+
+        for(Map.Entry<String,Integer> person : ages.entrySet()){
+            if(person.getValue() >= 18) adults.add(person.getKey());
+        }
+
+        return adults;
+
     }
 
     /**
@@ -51,7 +90,18 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if(head == null){
+            throw new IllegalArgumentException("No ListNode Exists");
+        }
+
+        int biggestNumber = head.data;
+        while(head != null){
+            if(head.data > biggestNumber){
+                biggestNumber = head.data;
+            }
+            head = head.next;
+        }
+        return biggestNumber;
     }
 
     /**
@@ -68,7 +118,15 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+
+        Map<T,Integer> map = new HashMap<>();
+
+        while(head != null){
+
+            map.put(head.data, map.getOrDefault(head.data, 0)+1);
+            head = head.next;
+        }
+        return map;
     }
 
 
@@ -81,7 +139,9 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        if(root == null)return 0;
+        
+        return Math.max(levelCount(root.left), levelCount(root.right)) +1;       
     }
 
 
@@ -109,7 +169,14 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+
+        if(root == null)return 0;
+
+        if(level == 1){
+            return root.data;
+        }
+
+        return sumAtLevel(root.left, level-1) + sumAtLevel(root.right, level-1);
     }
 
 
@@ -124,6 +191,30 @@ public class Practice {
      * @return true if the sums are equal, false otherwise
      */
     public static boolean sumMatch(BinaryTreeNode<Integer> root, ListNode<Integer> head) {
-        return false;
+
+        Stack<BinaryTreeNode<Integer>> stack = new Stack<>();
+        int treeSum = 0;
+
+        stack.push(root);
+        while(stack.size() > 0){
+            BinaryTreeNode<Integer> current = stack.pop();
+            if(current == null) continue;
+            stack.push(current.right);
+            stack.push(current.left);
+
+            treeSum += current.data;
+        }
+
+
+        int listSum = 0;
+        ListNode<Integer> current = head;
+        while(current != null){
+
+            listSum += current.data;
+            current = current.next;
+        }
+
+
+        return treeSum == listSum;
     }
 }
