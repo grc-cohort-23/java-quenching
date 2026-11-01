@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +14,12 @@ public class Practice {
      * @return the sum of the odd numbers in the array
      */
     public static int oddSum(int[] nums) {
-        return 0;
+        if(nums == null) return 0;
+        int sum = 0;
+        for(int  i = 0; i < nums.length ; i++){
+            if( nums[i] % 2 != 0) sum += nums[i];
+        }
+        return sum;
     }
 
     /**
@@ -27,7 +34,18 @@ public class Practice {
      * @throws NullPointerException if words is null
      */
     public static String shortestWord(Set<String> words) {
-        return null;
+        if (words == null) throw new NullPointerException("words is null");
+        if (words.isEmpty()) throw new IllegalArgumentException("words is empty");
+
+        String shortest = null;
+        for (String word : words) {
+            if (shortest == null
+                    || word.length() < shortest.length()
+                    || (word.length() == shortest.length() && word.compareTo(shortest) < 0)) {
+                shortest = word;
+            }
+        }
+        return shortest;
     }
 
     /**
@@ -40,7 +58,13 @@ public class Practice {
      * @throws NullPointerException if ages is null
      */
     public static Set<String> adults(Map<String, Integer> ages) {
-        return null;
+        if (ages == null) throw new NullPointerException("ages is null");
+
+        Set<String> result = new HashSet<>();
+        for (Map.Entry<String, Integer> entry : ages.entrySet()) {
+            if (entry.getValue() >= 18) result.add(entry.getKey());
+        }
+        return result;
     }
 
     /**
@@ -51,7 +75,13 @@ public class Practice {
      * @throws IllegalArgumentException if head is null
      */
     public static int biggestNumber(ListNode<Integer> head) {
-        return 0;
+        if (head == null) throw new IllegalArgumentException("head is null");
+
+        int max = head.data;
+        for (ListNode<Integer> curr = head.next; curr != null; curr = curr.next) {
+            if (curr.data > max) max = curr.data;
+        }
+        return max;
     }
 
     /**
@@ -68,7 +98,11 @@ public class Practice {
      * @return a frequency map of values in the list
      */
     public static <T> Map<T, Integer> frequencies(ListNode<T> head) {
-        return null;
+        Map<T, Integer> freq = new HashMap<>();
+        for (ListNode<T> curr = head; curr != null; curr = curr.next) {
+            freq.put(curr.data, freq.getOrDefault(curr.data, 0) + 1);
+        }
+        return freq;
     }
 
 
@@ -81,7 +115,8 @@ public class Practice {
      * @return the number of levels in the tree
      */
     public static int levelCount(BinaryTreeNode<?> root) {
-        return 0;
+        if (root == null) return 0;
+        return 1 + Math.max(levelCount(root.left), levelCount(root.right));
     }
 
 
@@ -109,7 +144,9 @@ public class Practice {
      * @return the sum of the nodes at the given level
      */
     public static int sumAtLevel(BinaryTreeNode<Integer> root, int level) {
-        return 0;
+        if (root == null || level < 1) return 0;
+        if (level == 1) return root.data;
+        return sumAtLevel(root.left, level - 1) + sumAtLevel(root.right, level - 1);
     }
 
 
